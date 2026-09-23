@@ -1,29 +1,15 @@
-name: Test cPanel FTPS
+name: Test cPanel FTP Port
 
 on:
   workflow_dispatch:
 
 jobs:
-  ftp-test:
+  ftp-port-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Force IPv4 for FTP hostname
+      - name: Test FTP port 21
         run: |
-          echo "104.21.78.77 ftp.lakebazar.com" | sudo tee -a /etc/hosts
-          getent hosts ftp.lakebazar.com
-
-      - name: Test FTPS connection
-        uses: step-security/ftp-deploy-action@v4
-        with:
-          server: ftp.lakebazar.com
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
-          dry-run: true
-          local-dir: ./public/
-          server-dir: ./
+          timeout 15 bash -c '</dev/tcp/78.46.25.219/21' \
+            && echo "FTP_PORT_21_REACHABLE" \
+            || (echo "FTP_PORT_21_NOT_REACHABLE"; exit 1)
