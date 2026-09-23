@@ -3,3 +3,6 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/lakebazar/public_html/
     - /bin/cp -R public/. $DEPLOYPATH
+    - /bin/mkdir -p /home/lakebazar/Fol-Bazar-Laravel/storage/framework/cache/data
+    - /bin/mkdir -p /home/lakebazar/Fol-Bazar-Laravel/storage/framework/sessions
+    - /bin/mkdir -p /home/lakebazar/Fol-Bazar-Laravel/storage/framework/views
