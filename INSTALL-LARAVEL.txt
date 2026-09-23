@@ -1,0 +1,2 @@
+This package contains the application code and Laravel project configuration.
+Run `composer install` in the project root on a machine with Composer to install the framework/vendor directory.

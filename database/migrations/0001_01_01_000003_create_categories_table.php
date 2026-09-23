@@ -1,0 +1,3 @@
+<?php
+use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\Schema;
+return new class extends Migration { public function up():void{if(Schema::hasTable('categories'))return;Schema::create('categories',function(Blueprint $t){$t->string('id',36)->primary();$t->string('name',190);$t->string('slug',190)->unique();$t->text('image_url')->nullable();$t->boolean('is_active')->default(true);$t->integer('sort_order')->default(0);$t->timestamps();});} public function down():void{/* legacy table preserved intentionally; not dropped on rollback */} };

@@ -1,0 +1,28 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Node dependencies / build cache
+/node_modules
+/public/hot
+/public/build
+
+# PHPUnit cache
+.phpunit.result.cache
+
+# Laravel runtime files
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/testing/*
+!/storage/framework/testing/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitignore
+
+# Local OS/editor files
+.DS_Store
+Thumbs.db

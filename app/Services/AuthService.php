@@ -1,0 +1,9 @@
+<?php
+namespace App\Services;
+use App\Models\Profile; use App\Models\User; use Illuminate\Support\Facades\Hash; use Illuminate\Support\Str; use Illuminate\Validation\ValidationException;
+class AuthService {
+ public function register(array $data): array { $phone=$this->phone($data['phone']); $email=trim(strtolower($data['email']??'')); if(!$email)$email='phone_'.$phone.'@customer.falbazar.local'; if(User::where('email',$email)->exists() || Profile::where('phone',$phone)->exists()) throw ValidationException::withMessages(['email'=>['এই মোবাইল/ইমেইল দিয়ে অ্যাকাউন্ট আছে']]); $user=User::create(['email'=>$email,'password_hash'=>Hash::make($data['password']),'role'=>'customer']); Profile::create(['id'=>$user->id,'full_name'=>$data['name'],'phone'=>$phone,'email'=>$email,'role'=>'customer']); $token=$user->createToken('website')->plainTextToken; return ['access_token'=>$token,'user'=>$this->userData($user)]; }
+ public function login(string $identifier,string $password): array { $email=str_contains($identifier,'@')?strtolower(trim($identifier)):'phone_'.$this->phone($identifier).'@customer.falbazar.local'; $user=User::where('email',$email)->first(); if(!$user || !Hash::check($password,$user->password_hash)) throw ValidationException::withMessages(['identifier'=>['Invalid login credentials']]); $token=$user->createToken('website')->plainTextToken; return ['access_token'=>$token,'user'=>$this->userData($user)]; }
+ public function userData(User $user): array { $p=$user->profile; return ['id'=>$user->id,'name'=>$p?->full_name ?: 'Customer','phone'=>$p?->phone ?: '','email'=>$user->email,'role'=>$user->role,'created_at'=>$user->created_at]; }
+ public function phone(string $p):string{$p=preg_replace('/\D+/','',$p);if(str_starts_with($p,'880')&&strlen($p)===13)$p='0'.substr($p,3);elseif(strlen($p)===10&&str_starts_with($p,'1'))$p='0'.$p;return $p;}
+}

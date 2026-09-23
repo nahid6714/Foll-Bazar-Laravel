@@ -1,0 +1,3 @@
+<?php
+use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\Schema;
+return new class extends Migration { public function up():void{if(Schema::hasTable('site_banners'))return;Schema::create('site_banners',function(Blueprint $t){$t->string('id',36)->primary();$t->enum('banner_type',['hero','promo'])->default('hero');$t->string('title',255)->nullable();$t->string('alt_text',255)->default('ফল বাজার ব্যানার');$t->text('image_url');$t->text('link_url')->nullable();$t->integer('sort_order')->default(0);$t->boolean('is_active')->default(true);$t->timestamps();$t->index(['banner_type','is_active','sort_order']);});} public function down():void{/* legacy table preserved intentionally; not dropped on rollback */} };

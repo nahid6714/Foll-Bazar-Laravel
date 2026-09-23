@@ -1,0 +1,4 @@
+<?php
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Api\BaseApiController; use App\Models\Category; use Illuminate\Http\Request;
+class CategoryController extends BaseApiController { public function index(){return $this->ok(Category::orderBy('sort_order')->get());} public function show(Category $category){return $this->ok($category);} public function store(Request $r){$d=$r->validate(['name'=>'required|string|max:190','slug'=>'required|string|max:190','image_url'=>'nullable|string','is_active'=>'boolean','sort_order'=>'integer']);return $this->ok(Category::create($d),201);} public function update(Request $r,Category $category){$category->update($r->validate(['name'=>'sometimes|string|max:190','slug'=>'sometimes|string|max:190','image_url'=>'nullable|string','is_active'=>'boolean','sort_order'=>'integer']));return $this->ok($category);} public function destroy(Category $category){$category->delete();return $this->ok();} }

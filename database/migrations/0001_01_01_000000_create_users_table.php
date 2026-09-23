@@ -1,0 +1,3 @@
+<?php
+use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\Schema;
+return new class extends Migration { public function up(): void { if(Schema::hasTable('users'))return; Schema::create('users',function(Blueprint $t){$t->string('id',36)->primary();$t->string('email',190)->unique();$t->string('password_hash');$t->enum('role',['customer','admin'])->default('customer');$t->timestamp('email_verified_at')->nullable();$t->rememberToken();$t->timestamps();}); } public function down():void{/* legacy table preserved intentionally; not dropped on rollback */} };

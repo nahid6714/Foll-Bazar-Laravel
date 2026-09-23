@@ -1,0 +1,3 @@
+<?php
+use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\Schema;
+return new class extends Migration { public function up():void{if(Schema::hasTable('profiles'))return;Schema::create('profiles',function(Blueprint $t){$t->string('id',36)->primary();$t->string('full_name',190)->nullable();$t->string('phone',50)->nullable()->index();$t->string('email',190)->nullable();$t->enum('role',['customer','admin'])->default('customer');$t->timestamps();$t->foreign('id')->references('id')->on('users')->cascadeOnDelete();});} public function down():void{/* legacy table preserved intentionally; not dropped on rollback */} };
