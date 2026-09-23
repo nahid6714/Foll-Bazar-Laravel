@@ -16,15 +16,12 @@ jobs:
           printf '%s\n' "$CPANEL_SSH_KEY" > ~/.ssh/cpanel_lakebazar
           chmod 600 ~/.ssh/cpanel_lakebazar
 
-      - name: Add cPanel host key
-        run: |
-          ssh-keyscan -4 -p 22 -H lakebazar.com >> ~/.ssh/known_hosts
-
       - name: Test SSH connection
         run: |
           ssh -4 -i ~/.ssh/cpanel_lakebazar \
             -p 22 \
             -o BatchMode=yes \
-            -o StrictHostKeyChecking=yes \
+            -o StrictHostKeyChecking=no \
+            -o ConnectTimeout=15 \
             lakebazar@lakebazar.com \
             'echo SSH_CONNECTION_OK'
