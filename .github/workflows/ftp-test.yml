@@ -11,6 +11,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Force IPv4 for FTP hostname
+        run: |
+          echo "104.21.78.77 ftp.lakebazar.com" | sudo tee -a /etc/hosts
+          getent hosts ftp.lakebazar.com
+
       - name: Test FTPS connection
         uses: step-security/ftp-deploy-action@v4
         with:
