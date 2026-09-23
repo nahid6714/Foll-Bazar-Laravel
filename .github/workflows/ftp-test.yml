@@ -1,0 +1,21 @@
+name: Test cPanel FTPS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ftp-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test FTPS connection
+        uses: step-security/ftp-deploy-action@v4
+        with:
+          server: ftp.lakebazar.com
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          dry-run: true
+          local-dir: ./public/
+          server-dir: ./
