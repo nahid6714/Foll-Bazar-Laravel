@@ -1,0 +1,30 @@
+name: Test cPanel SSH Connection
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ssh-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Prepare SSH key
+        env:
+          CPANEL_SSH_KEY: ${{ secrets.CPANEL_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$CPANEL_SSH_KEY" > ~/.ssh/cpanel_lakebazar
+          chmod 600 ~/.ssh/cpanel_lakebazar
+
+      - name: Add cPanel host key
+        run: |
+          ssh-keyscan -p 22 -H lakebazar.com >> ~/.ssh/known_hosts
+
+      - name: Test SSH connection
+        run: |
+          ssh -i ~/.ssh/cpanel_lakebazar \
+            -p 22 \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            lakebazar@lakebazar.com \
+            'echo SSH_CONNECTION_OK'
