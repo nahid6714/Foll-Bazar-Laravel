@@ -18,11 +18,11 @@ jobs:
 
       - name: Add cPanel host key
         run: |
-          ssh-keyscan -p 22 -H lakebazar.com >> ~/.ssh/known_hosts
+          ssh-keyscan -4 -p 22 -H lakebazar.com >> ~/.ssh/known_hosts
 
       - name: Test SSH connection
         run: |
-          ssh -i ~/.ssh/cpanel_lakebazar \
+          ssh -4 -i ~/.ssh/cpanel_lakebazar \
             -p 22 \
             -o BatchMode=yes \
             -o StrictHostKeyChecking=yes \
